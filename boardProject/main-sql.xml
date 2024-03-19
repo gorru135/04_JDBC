@@ -24,4 +24,12 @@
 		VALUES(SEQ_MEMBER_NO.NEXTVAL, ?, ?, 
 	 	?, ?, DEFAULT, DEFAULT)
 	</entry>
+	
+	<!-- 비밀번호 변경 -->
+	<entry key = "updatePassword">
+		UPDATE "MEMBER" SET
+		MEMBER_PW = ?
+		WHERE MEMBER_PW = ? 
+		AND MEMBER_NO = ?
+	</entry>
 </properties>
