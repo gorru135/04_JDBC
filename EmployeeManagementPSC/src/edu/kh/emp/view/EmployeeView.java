@@ -1,5 +1,7 @@
 package edu.kh.emp.view;
 
+import java.security.Provider.Service;
+import java.util.List;
 import java.util.Scanner;
 
 import edu.kh.emp.model.service.EmployeeService;
@@ -22,9 +24,10 @@ public class EmployeeView {
 				input = selectMenu();
 				
 				switch(input) {
-				case 1 : employeeAdd(); break;
-				case 2 : break;
+				case 1 : selectAll(); break;
+				case 2 : //insertemployee(); break;
 				case 3 : break;
+				case 4 : break;
 				case 0 : System.out.println("프로그램 종료.."); break;
 				default : System.out.println("메뉴에 있는 번호만 입력해주세요");
 				}
@@ -38,12 +41,30 @@ public class EmployeeView {
 		
 	}
 
+	private void selectAll() {
+		System.out.println("\n[전체 사원 정보 조회]\n");
+		
+		
+		
+		try {
+			List<Employee> empList = empService.selectAll();
+			
+			for(Employee emp : empList) {
+				System.out.printf("사원 번호 : %d / 사원 이름 : %s / 주민등록번호 : %s / 이메일 : %s / 부서명 : %s / 직급명 : %s / 급여 : %d / ");
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public int selectMenu() {
 		
 		System.out.println("\n==========[Employee]==========\n");
-		System.out.println("1. 사원 등록 ");
-		System.out.println("2. 사원 수정 ");
-		System.out.println("3. 사원 삭제");
+		System.out.println("1. 전체 사원 조회");
+		System.out.println("2. 사원 등록 ");
+		System.out.println("3. 사원 수정 ");
+		System.out.println("4. 사원 삭제");
 		System.out.println("0. 프로그램 종료 ");
 		
 		System.out.print("메뉴 선택 : ");

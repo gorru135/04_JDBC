@@ -138,4 +138,101 @@ public class BoardDAO {
 		}
 		return result;
 	}
+
+
+	public int updateBoard(Connection conn, String boardTitle, String boardContent, int boardNo) throws Exception{
+		
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("updateBoard");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, boardTitle);
+			pstmt.setString(2, boardContent);
+			pstmt.setInt(3, boardNo);
+			
+			result = pstmt.executeUpdate();
+			
+			
+		}finally {
+			
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	/** 다음 게시글 번호 조회 SQL 수행 DAO
+	 * @param conn
+	 * @return boardNo
+	 */
+	public int nextBoardNo(Connection conn) throws Exception{
+		int boardNo = 0;
+		
+		try {
+			String sql = prop.getProperty("nextBoardNo");
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			if(rs.next()) {
+				boardNo = rs.getInt(1);
+				
+				
+			}
+			
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+		
+		return boardNo;
+	}
+
+
+	public int insertBoard(Connection conn, String boardTitle, String boardContent, int memberNo, int boardNo)throws Exception{
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("insertBoard");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, boardNo);
+			pstmt.setString(2, boardTitle);
+			pstmt.setString(3, boardContent);
+			pstmt.setInt(4, memberNo);
+			
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
+
+
+	public int deleteComment(Connection conn, int boardNo) throws Exception{
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("deleteComment");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, boardNo);
+			
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			
+			close(pstmt);
+		}
+		return result;
+	}
+
+
 }

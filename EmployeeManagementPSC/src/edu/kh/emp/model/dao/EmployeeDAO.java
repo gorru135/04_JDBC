@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import static edu.kh.emp.common.JDBCTemplate.*;
 import edu.kh.emp.model.vo.Employee;
@@ -39,19 +41,19 @@ public class EmployeeDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, emp.getEmpId());
+			pstmt.setInt(1,emp.getEmpId());
 			pstmt.setString(2, emp.getEmpName());
 			pstmt.setString(3, emp.getEmpNo());
 			pstmt.setString(4, emp.getEmail());
 			pstmt.setString(5, emp.getPhone());
-			pstmt.setString(6, emp.getDepartmentTitle());
-			pstmt.setString(7, emp.getJobName());
-			pstmt.setInt(8, emp.getSalary());
-			pstmt.setString(9, emp.getDeptCode());
-			pstmt.setString(10, emp.getJobCode());
-			pstmt.setString(11, emp.getSalLevel());
-			pstmt.setDouble(12, emp.getBonus());
-			pstmt.setInt(13, emp.getManagerId());
+			pstmt.setString(6, emp.getDeptCode());
+			pstmt.setString(7, emp.getJobCode());
+			pstmt.setString(8, emp.getSalLevel());
+			pstmt.setInt(9,emp.getSalary());
+			pstmt.setDouble(10, emp.getBonus());
+			pstmt.setInt(11, emp.getManagerId());
+			
+			
 			result = pstmt.executeUpdate();
 			
 		} finally {
@@ -63,6 +65,38 @@ public class EmployeeDAO {
 		
 		
 		return result;
+	}
+
+	public List<Employee> selectAll(Connection conn) throws Exception{
+		List<Employee> empList = new ArrayList<Employee>();
+		
+		try {
+			String sql = prop.getProperty("selectAll");
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				int empId = rs.getInt("EMP_ID");
+				String empName = rs.getString("EMP_NAME");
+				String empNo = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String deptTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary = rs.getInt("SALARY");
+				
+				Employee emp = new Employee(empId, empName, empNo,email, phone, deptTitle,jobName,
+						salary);
+				
+				empList.add(emp);
+				
+			}
+			
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+		return empList;
 	}
 
 	
